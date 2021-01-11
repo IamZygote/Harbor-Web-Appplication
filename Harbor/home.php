@@ -44,6 +44,10 @@ else if($userType==2)//Driver
     echo "<a href='DriverHome.php?userID=". $userID ."' class='btn btn-default'>Driver Home</a>";
     echo "<button onclick='getAlert()'>Check for Latest Product</button>";
 }
+else if($userType==3)//Analyst
+{
+    echo "<a href='indexAnalysis.php?usrt=". $userType ."' class='btn btn-default'>Analyze</a>";
+}
 echo"<p><a href='login.php' class='btn btn-default'>Back</a></p>";
 ?>
 
