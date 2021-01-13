@@ -166,11 +166,22 @@ class User
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "select * FROM user";
+        $query = "select * FROM user WHERE isDeleted='0'";
         $result = $mysqli->query($query);
         return $result;
     }
 
+    public static function returnUserEmail($usrID)//return driver email
+    {
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection(); 
+        $query = "select Email FROM user WHERE ID='$usrID'";
+        $result = $mysqli->query($query);
+        $result=mysqli_fetch_assoc($result);
+        $usrEmail= $result['Email'];
+        return $usrEmail;
+    }
+    
     //view specific user
     public static function getRecord($id)
     {
@@ -181,7 +192,7 @@ class User
         return $result;
     }
     //view specific user for edit
-    public function editRecord($id)
+    public static function editRecord($id)
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
@@ -194,20 +205,22 @@ class User
     //Update user record
     public static function updateRecord($objUser)
     {
+        $x=date("Y-m-d");
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "update user SET Name='$objUser->name', password='$objUser->password', Address='$objUser->address',
-        UserType='$objUser->userType', Telephone='$objUser->telephone', Email='$objUser->email', NationalID='$objUser->nationalID'
+        echo $objUser->password;
+        $query = "update user SET Name='$objUser->name', Password='$objUser->Password', Address='$objUser->Address',
+        UserType='$objUser->UserType', Telephone='$objUser->Telephone', Email='$objUser->Email', NationalID='$objUser->NationalID' ,Updatedat='$x'
         WHERE ID='$objUser->id'";
         $mysqli->query($query);
     }
 
     //Delete user record
-    public function deleteUser($id)
+    public static function deleteUser($id)
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "delete from user where id='$id'";
+        $query = "Update user SET isDeleted='1' WHERE ID='$id'";
         $mysqli->query($query);
     }
 

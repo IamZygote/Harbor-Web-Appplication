@@ -56,6 +56,16 @@ class subject implements ISubject
         }
         return $string;
     }
+
+    public function notifyEmail()
+    {
+        $string = "";
+
+        foreach ($this->observers as $observer) {
+            $string .= $observer->Email($this);
+        }
+        return $string;
+    }
 }
 
 
@@ -64,18 +74,24 @@ class DriverList implements iobserver
     public function Update(ISubject $var){
         return "Added Product (" . $var->product_ID . "- " . $var->product_Name . ")\\n";
     }
+
+    public function Email(ISubject $var){
+        return "Added (" . $var->product_ID . "- " . $var->product_Name . ")\n";
+    }
 }
 
 
 
 class Notify
 {
-    public static function ListProductAlert()
+    
+    public static function ListProductAlert($idc)
     {
         $string="";
         $db = DbConnection::getInstance();
-        $mysqli = $db->getConnection(); 
-        $query = mysqli_query($mysqli,"select * FROM product WHERE ID>17");
+        $mysqli = $db->getConnection();
+        
+        $query = mysqli_query($mysqli,"select * FROM product WHERE ID>$idc");
 
         while ($row = $query->fetch_assoc())
         {
@@ -91,6 +107,59 @@ class Notify
             $string="no new products inserted.";
         }
         return strval($string);
+    }
+
+    public static function ListProductEmail($idc)
+    {
+        $string="";
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection();
+        
+        $query = mysqli_query($mysqli,"select * FROM product WHERE ID>$idc");
+
+        while ($row = $query->fetch_assoc())
+        {
+            $sub = new subject($row['Name'],$row['ID']);
+            $driver=new DriverList();
+            $sub->Add($driver);
+
+            $string .= $sub->notifyEmail();
+        }
+
+        if($string=="")
+        {
+            $string="no new products inserted.";
+        }
+        return strval($string);
+    }
+
+    public static function sendEmail($reciever, $message)
+    {
+        $subject = "Products To Deliver!";
+        $headers = "From: omar.soliman@msa.edu.eg";
+ 
+        if (mail($reciever, $subject, $message, $headers)) 
+        {
+            echo "Email successfully sent to $reciever...";
+        } 
+        else 
+        {
+            echo "Email sending failed...";
+        }
+    }
+
+    public static function getLastProduct()
+    {
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection();
+        $query = mysqli_query($mysqli,"select ID FROM product");
+
+        while ($row = $query->fetch_assoc())
+        {
+            $idCount = $row['ID'];
+            
+        }
+        return $idCount;
     }
 }
 ?>

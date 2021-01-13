@@ -59,7 +59,7 @@ class ProductCR
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "select * FROM product";
+        $query = "select * FROM product WHERE isDeleted='0'";
         $result=$mysqli->query($query);
         return $result;
     }
@@ -93,10 +93,11 @@ class ProductCR
 
     public static function updateProduct(ProductCR $objProduct)
     {
+        $x=date("Y-m-d");
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
         $idTask = $_GET['id'];
-        $query= "update product SET Name='$objProduct->name', ImportedCountry='$objProduct->ImportedCountry', Description='$objProduct->desc', EnteranceDate='$objProduct->EnteranceDate' ,Quantity='$objProduct->Quantity' ,Weight='$objProduct->Weight' WHERE ID='$idTask'";
+        $query= "update product SET Name='$objProduct->name', ImportedCountry='$objProduct->ImportedCountry', Description='$objProduct->desc', EnteranceDate='$objProduct->EnteranceDate' ,Quantity='$objProduct->Quantity' ,Weight='$objProduct->Weight',Updatedat='$x' WHERE ID='$idTask'";
         $mysqli->query($query);
 
 
@@ -107,7 +108,7 @@ class ProductCR
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query= "delete FROM product WHERE id ='$id'";
+        $query = "update product SET isDeleted='1' WHERE ID=".$id;
         $mysqli->query($query);
     }
 

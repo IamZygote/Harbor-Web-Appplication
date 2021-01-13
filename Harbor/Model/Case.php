@@ -5,7 +5,6 @@ class CaseCl
 {
     public $id;
     public $name;
-    public $caseDate;
     public $employeeID;
     public $analystID;
     public $importerID;
@@ -16,9 +15,15 @@ class CaseCl
         
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "insert into `case` (Name ,CaseDate ,EmployeeID ,AnalystID ,ImporterID ,PaymentMethod) 
-        values('$objCase->name','$objCase->caseDate','$objCase->employeeID','$objCase->analystID','$objCase->importerID','$objCase->paymentMethod')";
+        $query = "insert into `case` (Name ,EmployeeID ,AnalystID ,ImporterID ,PaymentMethod) 
+        values('$objCase->name','$objCase->employeeID','$objCase->analystID','$objCase->importerID','$objCase->paymentMethod')";
         $mysqli->query($query);
+
+        $objCase->id=$objCase->id+1;
+        $query = "insert into `case_details` (ProductID ,CaseID) 
+        values('$objCase->productID','$objCase->id')";
+        $mysqli->query($query);
+        
         echo"Data inserted succussefully";
     }
 
@@ -32,11 +37,35 @@ class CaseCl
         return $result;
     }
 
+    public static function getLastCase()
+    {
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection();
+        $query = mysqli_query($mysqli,"select ID FROM `case`");
+
+        while ($row = $query->fetch_assoc())
+        {
+            $cID = $row['ID'];
+            
+        }
+        return $cID;
+    }
+
+    public static function getPaymentFromID($id)
+    {
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection();
+        $query = "select Name FROM payment_method WHERE ID = '$id'";
+        $result=$mysqli->query($query);
+        $result=mysqli_fetch_assoc($result);
+        return $result;
+    }
+
     public static function ListView()
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "select * FROM `case`";
+        $query = "select * FROM `case` WHERE isDeleted = '0'";
         $result=$mysqli->query($query);
         return $result;
     }
@@ -64,6 +93,14 @@ class CaseCl
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
         $query = "select Name, ID FROM user WHERE UserType = '5'";
+        $result=$mysqli->query($query);
+        return $result;
+    }
+    public static function ListPayment()
+    {
+        $db = DbConnection::getInstance();
+        $mysqli = $db->getConnection(); 
+        $query = "select Name, ID FROM payment_method";
         $result=$mysqli->query($query);
         return $result;
     }
@@ -104,19 +141,24 @@ class CaseCl
 
     public static function updateCase(CaseCl $objCase)
     {
+        $x=date("Y-m-d");
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
         $idTask = $_GET['id'];
-        $query= "update `case` SET Name='$objCase->name', CaseDate='$objCase->caseDate', EmployeeID='$objCase->employeeID', AnalystID='$objCase->analystID' ,ImporterID='$objCase->importerID' ,PaymentMethod='$objCase->paymentMethod' WHERE ID='$idTask'";
+        $query= "Update `case` SET Name='$objCase->name', EmployeeID='$objCase->employeeID', AnalystID='$objCase->analystID' ,ImporterID='$objCase->importerID' ,Updatedat='$x' WHERE ID='$idTask'";
         $mysqli->query($query);
+        $query2 = "update `case_details` SET ProductID='$objCase->productID' WHERE CaseID='$idTask'";
+        $mysqli->query($query2);
     }
 
     public static function deleteCase($id)
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query= "delete FROM `case` WHERE id ='$id'";
+        $query2= "Update `case_details` SET isDeleted='1' WHERE CaseID='$id'";
+        $query= "Update `case` SET isDeleted='1' WHERE ID='$id'";
         $mysqli->query($query);
+        $mysqli->query($query2);
     }
     
     

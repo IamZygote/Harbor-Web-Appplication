@@ -20,7 +20,7 @@ class Schedule
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "select * FROM schedule";
+        $query = "select * FROM schedule WHERE isDeleted='0'";
         $result=$mysqli->query($query);
         return $result;
     }
@@ -29,7 +29,7 @@ class Schedule
     {
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query= "delete FROM schedule WHERE id ='$id'";
+        $query= "update schedule SET isDeleted='1' WHERE id ='$id'";
         $result=$mysqli->query($query);
     }
     public $varr;
@@ -46,6 +46,7 @@ class Schedule
     }
     public static function updateTask(Schedule $objUpdate)
     {
+        $x=date("Y-m-d");
         $idTask=$objUpdate->id;
         $analystID=$objUpdate->AnalystID;
         $taskName=$objUpdate->Task_Name;
@@ -56,7 +57,7 @@ class Schedule
 
         $db = DbConnection::getInstance();
         $mysqli = $db->getConnection(); 
-        $query = "update schedule SET Product_ID='$productID', Task_Name='$taskName', AnalystID='$analystID', Description='$desc' where ID= '$idTask'";
+        $query = "update schedule SET Product_ID='$productID', Task_Name='$taskName', AnalystID='$analystID', Description='$desc',Updatedat='$x' where ID= '$idTask'";
         $mysqli->query($query);
     }
 }
