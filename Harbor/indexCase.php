@@ -21,7 +21,6 @@ $userType=$_GET['usrt'];
                                     <tr>
                                         <th>ID</th>
                                         <th>Title</th>
-                                        <th>CaseDate</th>
                                         <th>EmployeeID</th>
                                         <th>AnalystID</th>                                       
                                         <th>ImporterID</th>
@@ -37,7 +36,6 @@ $userType=$_GET['usrt'];
                                         echo "<tr>";
                                         echo "<td>" . $row['ID'] . "</td>";
                                         echo "<td>" . $row['Name'] . "</td>";
-                                        echo "<td>" . $row['CaseDate'] . "</td>";
                                         echo "<td>" . $row['EmployeeID'] . "</td>";
                                         echo "<td>" . $row['AnalystID'] . "</td>";
                                         echo "<td>" . $row['ImporterID'] . "</td>";

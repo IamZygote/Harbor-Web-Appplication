@@ -2,7 +2,10 @@
 require_once "bootstrap.php";
 require_once "Model/dbConfig.php";
 require_once('./Model/Product.php');
+require_once ('Model/Notification.php');
+require_once ('Model/User.php');
 $userID=$_GET['userID'];
+
 ?>
 
 <html>

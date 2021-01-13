@@ -44,7 +44,7 @@ $userID=$_GET['userID'];
 
                                         if($row['deliverFlag']==2)
                                         {
-                                            echo "<a href='DeliveredProduct.php?id=". $row['ID']  ."' class='btn btn-success pull-right'>Delivered</a>";
+                                            echo "<a href='DeliveredProduct.php?id=". $row['ID']  ."&userID=".$userID."' class='btn btn-success pull-right'>Delivered</a>";
                                         }
                                         else
                                         {

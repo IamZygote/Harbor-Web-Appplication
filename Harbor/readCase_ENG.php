@@ -9,7 +9,7 @@ $row=mysqli_fetch_assoc($result);
 $eName = CaseCl::getUserFromID($row["EmployeeID"]);
 $aName = CaseCl::getUserFromID($row["AnalystID"]);
 $iName = CaseCl::getUserFromID($row["ImporterID"]);
-
+$pName = CaseCl::getPaymentFromID($row["PaymentMethod"]);
 ?>
 <html>
 <body>
@@ -30,7 +30,7 @@ $iName = CaseCl::getUserFromID($row["ImporterID"]);
                     </div>
                     <div class="form-group">
                         <label>Case Date</label>
-                        <p class="form-control-static"><?php echo $row["CaseDate"]; ?></p>
+                        <p class="form-control-static"><?php echo $row["CreateDat"]; ?></p>
                     </div>
                     <div class="form-group">
                         <label>Employee Name</label>
@@ -46,7 +46,7 @@ $iName = CaseCl::getUserFromID($row["ImporterID"]);
                     </div>
                     <div class="form-group">
                         <label>Payment Method</label>
-                        <p class="form-control-static"><?php echo $row["PaymentMethod"]; ?></p>
+                        <p class="form-control-static"><?php echo $pName["Name"]; ?></p>
                     </div>
                     <?php echo"<p><a href='indexCase.php?usrt=". $userType ."' class='btn btn-primary'>Back</a></p>"?>
                 </div>

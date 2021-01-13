@@ -2,7 +2,12 @@
 require_once("bootstrap.php");
 require_once("Model/Notification.php");
 $userType=$_GET['usrt'];
-$result = Notify::ListProductAlert();
+$myfile = fopen("lastProductID.txt", "r") or die("Unable to open file!");
+$idCount = fread($myfile,filesize("lastProductID.txt"));
+fclose($myfile);
+$result = Notify::ListProductAlert($idCount);
+/*$email= User::returnUserEmail($userID);
+Notify::sendEmail($email, $result);*/
 ?>
 
 <html>
@@ -40,6 +45,10 @@ else if($userType==6)//Scheduler
 else if($userType==2)//Driver
 {
     //echo "<script>alert('$result');</script>";
+    //$idCount = Notify::getLastProduct();
+    
+
+    
     $userID=$_GET['id'];
     echo "<a href='DriverHome.php?userID=". $userID ."' class='btn btn-default'>Driver Home</a>";
     echo "<button onclick='getAlert()'>Check for Latest Product</button>";

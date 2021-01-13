@@ -23,9 +23,6 @@ $data=mysqli_fetch_assoc($result);
                             <label>Title</label>
                             <input type="text" name="Name" class="form-control" required value="<?php echo $data['Name'] ?>">
                         
-                            <label>Case Date</label>
-                            <input type="date" name="CaseDate" class="form-control" required value="<?php echo $data['CaseDate'] ?>">
-                           
                             <label>Employee</label>
                             <select name="employeeID" class="form-control">
                             <?php
@@ -62,9 +59,17 @@ $data=mysqli_fetch_assoc($result);
                             ?>
                             </select>
 
-                            <label>Payment Method</label>
-                            <input type="text" name="PaymentMethod" class="form-control" required value="<?php echo $data['PaymentMethod'] ?>">
-                        
+                            <label>Product ID</label>
+                            <select name="productID" class="form-control">
+                            <?php
+                                include_once("Model/Product.php");
+                                $result= ProductCR::ListView();
+                                while ($row = $result->fetch_assoc())
+                                {
+                                    echo "<option value=".$row['ID'].">" .$row['ID'] ." - ".$row['Name'] . "</option>";
+                                }
+                            ?>
+                            </select>
                             <input type="submit" name="CaseUpdate" class="btn btn-primary" value="Update">
                             <?php echo"<p><a href='indexCase.php?usrt=". $userType ."' class='btn btn-default'>Back</a></p>"?>
                     </form>

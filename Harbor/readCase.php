@@ -9,6 +9,7 @@ $row=mysqli_fetch_assoc($result);
 $eName = CaseCl::getUserFromID($row["EmployeeID"]);
 $aName = CaseCl::getUserFromID($row["AnalystID"]);
 $iName = CaseCl::getUserFromID($row["ImporterID"]);
+$pName = CaseCl::getPaymentFromID($row["PaymentMethod"]);
 $cDetails = CaseCl::getCaseDetails($id);
 
 ?>
@@ -21,10 +22,10 @@ $cDetails = CaseCl::getCaseDetails($id);
                     <div class="page-header">
                         <h1>View Report</h1>
                     </div>
-                    <p class="form-control-static"><?php echo "CaseID: " . $row["ID"]; ?></p>
+                    <p class="form-control-static"><?php echo "Title: " . $row["Name"]; ?></p>
                     
                     <p class="form-control-static">:إنه في التاريخ الموافق 
-                    <?php echo $row["CaseDate"]?> تم بحمد الله تعالى وتوفيقه الإلتفاق بين كل من</p>
+                    <?php echo $row["Createdat"]?> تم بحمد الله تعالى وتوفيقه الإلتفاق بين كل من</p>
                     
                     <p class="form-control-static"><?php echo $iName['Name']." : (المستورد) طرف أول   "; ?></p>
 
@@ -32,7 +33,7 @@ $cDetails = CaseCl::getCaseDetails($id);
                     
                     <p class="form-control-static"><?php echo $aName['Name']." : (محلل البضائع) طرف ثالث  "; ?></p>
 
-                    <p class="form-control-static"><?php echo "Payment Method: " . $row["PaymentMethod"]; ?></p>
+                    <p class="form-control-static"><?php echo $pName['Name']." : طريقة الدفع"; ?></p>
                     
                     <table class='table table-bordered table-striped'>
                                 <thead>

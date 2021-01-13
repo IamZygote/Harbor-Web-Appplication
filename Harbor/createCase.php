@@ -1,7 +1,7 @@
 <?php
 require_once("bootstrap.php");
-require_once "Controller/CreateCaseController.php";
 $userType=$_GET['usrt'];
+require_once ("Controller/CreateCaseController.php");
 ?>
 <html>
     <head>
@@ -16,13 +16,12 @@ $userType=$_GET['usrt'];
                         <h2>Create Record</h2>
                     </div>
                     <p><h1>Add Case</h1></p>
-                    <form method="POST">
-                        
+                        <form method="POST">
+                            <?php
+                            echo "<input type='hidden' name='usrt' value=$userType>";
+                            ?>
                             <label>Title</label>
                             <input type="text" name="Name" class="form-control" required>
-                        
-                            <label>CaseDate</label>
-                            <input type="date" name="CaseDate" class="form-control" required>
                            
                             <label>Employee</label>
                             <select name="employeeID" class="form-control">
@@ -59,12 +58,33 @@ $userType=$_GET['usrt'];
                                 }
                             ?>
                             </select>
+
+                            <label>Product ID</label>
+                            <select name="productID" class="form-control">
+                            <?php
+                                include_once("Model/Product.php");
+                                $result= ProductCR::ListView();
+                                while ($row = $result->fetch_assoc())
+                                {
+                                    echo "<option value=".$row['ID'].">" .$row['ID'] ." - ".$row['Name'] . "</option>";
+                                }
+                            ?>
+                            </select>
                         
                             <label>Payment Method</label>
-                            <input type="text" name="PaymentMethod" class="form-control" required>
+                            <select name="paymentMethod" class="form-control">
+                            <?php
+                                include_once("Model/Case.php");
+                                $result= CaseCl::ListPayment();
+                                while ($row = $result->fetch_assoc())
+                                {
+                                    echo "<option value=".$row['ID'].">" .$row['ID'] ." - ".$row['Name'] . "</option>";
+                                }
+                            ?>
+                            </select>
                         
                             <input type="submit" name="CaseSubmit" class="btn btn-primary" value="Submit">
-                            <?php echo"<p><a href='indexCase.php?usrt=". $userType ."' class='btn btn-default'>Back</a></p>"?>
+                            <?php echo "<a href='indexCase.php?usrt=". $userType ."' class='btn btn-default'>Back</a></p>";?>
                     </form>
                 </div>
             </div>        
